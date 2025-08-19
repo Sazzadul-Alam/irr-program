@@ -32,7 +32,8 @@ public class IrrController {
             @RequestParam String transactionId) {
 
         // Save enrollment
-        return irrService.saveProgram();
+        return irrService.saveProgram(name, contactNumber, email, trainingMode,
+                program, programPrice, paymentMethod, transactionId);
     }
 
 }
