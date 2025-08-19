@@ -3,7 +3,7 @@
 <div class="page" *ngIf="!showNextCard; else nextCard">
   <!-- Top breadcrumb -->
   <div class="crumb">
-    <span>Course Registration</span>
+    <span><b>Course Registration</b></span>
     <span class="badge" style="background:#d5dcf3!important;">In progress</span>
   </div>
 
@@ -135,6 +135,10 @@
       <button type="button" class="btn" (click)="validate()">Proceed for Payment →</button>
     </form>
   </div>
+  <footer >
+    <div class="footer-logo">
+    </div>
+  </footer>
 
 </div>
 
@@ -155,37 +159,45 @@
 
     <!-- Card -->
     <div class="card">
-      <div  class="stepper">
-        <div class="row dots">
-          <div class=" col-md-6">
-            <span class="dot active">1</span>
-            <!--          <span class="line"></span>-->
-            <div class="progress">
-              <div class="bar" style="width:10%"></div>
+      <div class="stepper-rail">
+        <ul class="steps">
+          <!-- STEP 1 -->
+          <li class="step"
+              [class.active]="step === 1"
+              [class.completed]="step > 1">
+            <div class="head">
+              <span class="dot">1</span>
+              <div class="track" aria-hidden="true">
+                <div class="fill"
+                     [style.width.%]="step === 1 ? progress : 100"></div>
+              </div>
             </div>
-          </div>
-          <div class="col-md-3">
+            <div class="caption">Information</div>
+          </li>
 
-          </div>
-          <div class="col-md-3"></div>
+          <li class="step"
+              [class.active]="step === 2"
+              [class.completed]="step > 2">
+            <div class="head">
+              <span class="dot">2</span>
+              <div class="track" aria-hidden="true">
+                <div class="fill"
+                     [style.width.%]="step === 2 ? progress : (step > 2 ? 100 : 0)"></div>
+              </div>
+            </div>
+            <div class="caption">Payment</div>
+          </li>
 
-          <!--        <span class="line"></span>-->
-          <!--        <span class="dot">2</span>-->
-        </div>
+          <!-- STEP 3 -->
+          <li class="step" [class.active]="step === 3">
+            <div class="head">
+              <span class="dot">3</span>
+              <!-- no track after the last dot -->
+            </div>
+            <div class="caption">Complete</div>
+          </li>
+        </ul>
       </div>
-      <!-- Stepper -->
-      <!--    <div class="stepper">-->
-      <!--      <div class="dots">-->
-      <!--        <span class="dot active">1</span>-->
-      <!--        <span class="line"></span>-->
-      <!--        <span class="dot">2</span>-->
-      <!--      </div>-->
-      <!--      <div class="progress">-->
-      <!--        <div class="bar" style="width: 50%"></div>-->
-      <!--      </div>-->
-      <!--    </div>-->
-
-      <!-- Title -->
       <h2 class="title">IRR Training Program Enrollment</h2>
       <p class="sub">Digitalized collects this information to better understand and serve your business.</p>
 

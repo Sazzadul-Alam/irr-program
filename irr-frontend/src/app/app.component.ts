@@ -70,6 +70,7 @@ export class AppComponent implements OnInit {
   validate() {
     if (this.name && this.contactNumber && this.email && this.trainingMode && this.selectedProgram) {
       this.showNextCard = true;
+      this.step=2;
     } else {
       alert('Please fill all fields before proceeding.');
     }
