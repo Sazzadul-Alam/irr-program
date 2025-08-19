@@ -57,29 +57,16 @@ export class AppComponent implements OnInit {
   }
 
   setSelectedProgram(program: any) {
-    console.log(program)
-    this.selectedProgram = program;
-    console.log('Selected Program:', this.selectedProgram);
+    let selected = this.programs.find(p => p.program_name === program);
+    if (selected) {
+      this.selectedProgram = program;
+      this.programPrice = selected.price;
+      console.log('Selected Program:', this.selectedProgram);
+      console.log('Program Price:', this.programPrice);
+    }
   }
 
   validate() {
-    // console.log("name: "+this.name)
-    // console.log("name: "+this.contactNumber)
-    // console.log("name: "+this.email)
-    // console.log("name: "+this.trainingMode)
-    // console.log("name: "+this.selectedProgram)
-    // if (
-    //   this.name &&
-    //   this.contactNumber &&
-    //   this.email &&
-    //   this.trainingMode &&
-    //   this.selectedProgram
-    // ) {
-    //   this.showNextCard = true; // show the next div
-    // } else {
-    //   alert('Please fill all fields before proceeding.');
-    //   this.showNextCard = false;
-    // }
     if (this.name && this.contactNumber && this.email && this.trainingMode && this.selectedProgram) {
       this.showNextCard = true;
     } else {
@@ -90,4 +77,6 @@ export class AppComponent implements OnInit {
   finalize() {
 
   }
+
+
 }
