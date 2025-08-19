@@ -26,8 +26,18 @@ public class IrrServiceImpl implements  IrrService{
     }
 
     @Override
-    public ResponseEntity<?> saveProgram() {
-        return null;
+    public ResponseEntity<?> saveProgram(String name, String contactNumber, String email, String trainingMode, String program, String programPrice, String paymentMethod, String transactionId) {
+        try {
+         irrDao.saveDetails(
+                    name, contactNumber, email, trainingMode,
+                    program, programPrice, paymentMethod, transactionId
+            );
+            return ResponseEntity.ok("Successfully Submitted");
+        } catch (Exception e) {
+            log.error("Error =>{}, Reason =>{}, Stacktrace =>{}", e.getMessage(), e.getCause(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while fetching program details");
+        }
     }
+
 
 }

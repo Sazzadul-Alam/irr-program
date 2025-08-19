@@ -16,4 +16,17 @@ public class IrrDAoImpl implements  IrrDao{
         final String sql = "SELECT id,program_name,price FROM program_list";
         return jdbcTemplate.queryForList(sql);
     }
+
+    @Override
+    public void saveDetails(String name, String contactNumber, String email, String trainingMode, String program, String programPrice, String paymentMethod, String transactionId) {
+
+            String sql = "INSERT INTO irr_data (name, email, contact, training_mode,  program_name, trx_id) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
+
+
+        jdbcTemplate.update(sql, name, email, contactNumber, trainingMode,  program, transactionId);
+
+        }
+
+
 }
