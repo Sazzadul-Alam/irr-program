@@ -20,4 +20,19 @@ public class IrrController {
         return irrService.getProgram();
     }
 
+    @PostMapping("/save")
+    public ResponseEntity<?> saveEnrollment(
+            @RequestParam String name,
+            @RequestParam String contactNumber,
+            @RequestParam String email,
+            @RequestParam String trainingMode,
+            @RequestParam String program,
+            @RequestParam String programPrice,
+            @RequestParam String paymentMethod,
+            @RequestParam String transactionId) {
+
+        // Save enrollment
+        return irrService.saveProgram();
+    }
+
 }

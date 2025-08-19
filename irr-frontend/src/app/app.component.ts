@@ -26,6 +26,8 @@ export class AppComponent implements OnInit {
   trainingMode: string = '';
   selectedProgram: any = '';
   programPrice: any='';
+  paymentMethod = 'bKash';
+  transactionId :any = '';
   step = 1;        // 1 | 2 | 3
   progress = 30;
   constructor(private http: HttpClient) {}
@@ -76,8 +78,29 @@ export class AppComponent implements OnInit {
   }
 
   finalize() {
+    const formData = new FormData();
+    formData.append("name", this.name);
+    formData.append("contactNumber", this.contactNumber);
+    formData.append("email", this.email);
+    formData.append("trainingMode", this.trainingMode);
+    formData.append("program", this.selectedProgram);
+    formData.append("programPrice", this.programPrice.toString());
+    formData.append("paymentMethod", this.paymentMethod);
+    formData.append("transactionId", this.transactionId);
 
+    console.log("FormData to send:", formData);
+
+    this.http.post('http://localhost:9000/irrcont/save', formData)
+      .subscribe({
+        next: (res) => {
+          console.log(" successful:", res);
+          alert("Enrollment successful!");
+        },
+        error: (err) => {
+          console.error("Error while enrolling:", err);
+          alert("Something went wrong. Please try again.");
+        }
+      });
   }
-
 
 }

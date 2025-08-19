@@ -203,6 +203,40 @@
             <span class="label">Program Expenditure</span>
             <input class="input" type="tel" [(ngModel)]="programPrice" name="programExpenditure" />
           </label>
+
+          <label class="field">
+            <span class="label">Payment Method</span>
+            <select class="input" name="paymentMethod" [(ngModel)]="paymentMethod" disabled>
+              <option [value]="paymentMethod">{{ paymentMethod }}</option>
+            </select>
+          </label>
+
+          <label>
+            <span >
+            01708 491 569 (Merchant No.)
+            </span>
+          </label>
+
+<!--          <div class="instructions">-->
+<!--            <ul class="steps">-->
+<!--              <li>Step 1: Select <strong>Make Payment</strong> option.</li>-->
+<!--              <li>Step 2: Provide DataSoft Merchant Wallet <strong>01708 491 569</strong>.</li>-->
+<!--              <li>Step 3: Pay the Program Expenditure.</li>-->
+<!--              <li>Step 4: Copy Transaction ID (Trx ID) and paste below.</li>-->
+<!--            </ul>-->
+<!--          </div>-->
+
+
+          <label class="field">
+            <span class="label">Transaction ID </span>
+            <input
+              class="input"
+              type="text"
+              [(ngModel)]="transactionId"
+              name="transactionId"
+            />
+          </label>
+
         </div>
 
         <button type="button" class="btn" (click)="finalize()">Finalize →</button>
