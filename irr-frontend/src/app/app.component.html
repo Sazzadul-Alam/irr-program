@@ -1,11 +1,6 @@
 
 
-<div class="page">
-  <!-- Decorative stripes -->
-<!--  <div class="stripe stripe-1"></div>-->
-<!--  <div class="stripe stripe-2"></div>-->
-<!--  <div class="stripe stripe-3"></div>-->
-
+<div class="page" *ngIf="!showNextCard; else nextCard">
   <!-- Top breadcrumb -->
   <div class="crumb">
     <span>Course Registration</span>
@@ -18,7 +13,7 @@
       <div class="row dots">
         <div class=" col-md-6">
           <span class="dot active">1</span>
-<!--          <span class="line"></span>-->
+          <!--          <span class="line"></span>-->
           <div class="progress">
             <div class="bar" style="width:10%"></div>
           </div>
@@ -28,21 +23,21 @@
         </div>
         <div class="col-md-3"></div>
 
-<!--        <span class="line"></span>-->
-<!--        <span class="dot">2</span>-->
+        <!--        <span class="line"></span>-->
+        <!--        <span class="dot">2</span>-->
       </div>
     </div>
     <!-- Stepper -->
-<!--    <div class="stepper">-->
-<!--      <div class="dots">-->
-<!--        <span class="dot active">1</span>-->
-<!--        <span class="line"></span>-->
-<!--        <span class="dot">2</span>-->
-<!--      </div>-->
-<!--      <div class="progress">-->
-<!--        <div class="bar" style="width: 50%"></div>-->
-<!--      </div>-->
-<!--    </div>-->
+    <!--    <div class="stepper">-->
+    <!--      <div class="dots">-->
+    <!--        <span class="dot active">1</span>-->
+    <!--        <span class="line"></span>-->
+    <!--        <span class="dot">2</span>-->
+    <!--      </div>-->
+    <!--      <div class="progress">-->
+    <!--        <div class="bar" style="width: 50%"></div>-->
+    <!--      </div>-->
+    <!--    </div>-->
 
     <!-- Title -->
     <h2 class="title">IRR Training Program Enrollment</h2>
@@ -57,7 +52,7 @@
           <input
             class="input"
             type="text"
-            placeholder="Rasul Kabir"
+            [(ngModel)]="name"
             name="fullName"
           />
         </label>
@@ -68,7 +63,7 @@
           <input
             class="input"
             type="tel"
-            placeholder="01720000000"
+            [(ngModel)]="contactNumber"
             name="contactNumber"
           />
         </label>
@@ -79,6 +74,7 @@
           <input
             class="input"
             type="email"
+            [(ngModel)]="email"
             placeholder="abc@gmail.com"
             name="email"
           />
@@ -99,35 +95,48 @@
           </select>
         </label>
 
-        <!-- Program Selection (full width on small, half on md) -->
-<!--        <label class="field grid-span-2">-->
-<!--          <span class="label">Program Selection</span>-->
-          <label class="field grid-span-2">
-            <span class="label">Program Selection</span>
-            <select class="input" name="program" [(ngModel)]="selectedProgram">
-              <option value="" disabled selected>Select</option>
-              <option *ngFor="let program of programs" [value]="program">{{ program }}</option>
-            </select>
-          </label>
-<!--          <select class="input" name="program">-->
-<!--            <option value="" disabled selected>Select</option>-->
-<!--            <option>IRR Fundamentals</option>-->
-<!--            <option>Advanced IRR Modeling</option>-->
-<!--            <option>Portfolio Risk Analytics</option>-->
-<!--            <option>Regulatory Reporting</option>-->
-<!--            <option>Stress Testing Workshop</option>-->
-<!--            <option>Market Risk for IRR</option>-->
-<!--            <option>Data & ETL for IRR</option>-->
-<!--            <option>Visualization & Dashboards</option>-->
-<!--            <option>Capstone: End‑to‑End IRR</option>-->
-<!--          </select>-->
-<!--        </label>-->
+        <label class="field grid-span-2">
+          <span class="label">Program Selection</span>
+          <select class="input" name="program" [(ngModel)]="selectedProgram"
+                  (change)="setSelectedProgram(selectedProgram)">
+            <option value="" disabled selected>Select</option>
+            <option *ngFor="let program of programs" [value]="program.program_name">
+              {{ program.program_name }}
+            </option>
+          </select>
+        </label>
+
       </div>
 
-      <button type="button" class="btn">Proceed for Payment →</button>
+      <button type="button" class="btn" (click)="validate()">Proceed for Payment →</button>
     </form>
   </div>
 
-
-
 </div>
+
+
+
+
+
+<ng-template #nextCard>
+  <div class="page">
+    <!-- Second form content -->
+    <form class="form" novalidate>
+      <div class="grid">
+        <!-- Program Name -->
+        <label class="field">
+          <span class="label">Program Name</span>
+          <input class="input" type="text" [(ngModel)]="selectedProgram" name="programName" />
+        </label>
+
+        <!-- Program Expenditure -->
+        <label class="field">
+          <span class="label">Program Expenditure</span>
+          <input class="input" type="tel" [(ngModel)]="programPrice" name="programExpenditure" />
+        </label>
+      </div>
+
+      <button type="button" class="btn" (click)="finalize()">Finalize →</button>
+    </form>
+  </div>
+</ng-template>
