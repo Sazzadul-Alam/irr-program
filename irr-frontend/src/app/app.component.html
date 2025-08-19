@@ -145,22 +145,70 @@
 <ng-template #nextCard>
   <div class="page">
     <!-- Second form content -->
-    <form class="form" novalidate>
-      <div class="grid">
-        <!-- Program Name -->
-        <label class="field">
-          <span class="label">Program Name</span>
-          <input class="input" type="text" [(ngModel)]="selectedProgram" name="programName" />
-        </label>
 
-        <!-- Program Expenditure -->
-        <label class="field">
-          <span class="label">Program Expenditure</span>
-          <input class="input" type="tel" [(ngModel)]="programPrice" name="programExpenditure" />
-        </label>
+
+    <!-- Top breadcrumb -->
+    <div class="crumb">
+      <span>Course Registration</span>
+      <span class="badge">In progress</span>
+    </div>
+
+    <!-- Card -->
+    <div class="card">
+      <div  class="stepper">
+        <div class="row dots">
+          <div class=" col-md-6">
+            <span class="dot active">1</span>
+            <!--          <span class="line"></span>-->
+            <div class="progress">
+              <div class="bar" style="width:10%"></div>
+            </div>
+          </div>
+          <div class="col-md-3">
+
+          </div>
+          <div class="col-md-3"></div>
+
+          <!--        <span class="line"></span>-->
+          <!--        <span class="dot">2</span>-->
+        </div>
       </div>
+      <!-- Stepper -->
+      <!--    <div class="stepper">-->
+      <!--      <div class="dots">-->
+      <!--        <span class="dot active">1</span>-->
+      <!--        <span class="line"></span>-->
+      <!--        <span class="dot">2</span>-->
+      <!--      </div>-->
+      <!--      <div class="progress">-->
+      <!--        <div class="bar" style="width: 50%"></div>-->
+      <!--      </div>-->
+      <!--    </div>-->
 
-      <button type="button" class="btn" (click)="finalize()">Finalize →</button>
-    </form>
+      <!-- Title -->
+      <h2 class="title">IRR Training Program Enrollment</h2>
+      <p class="sub">Digitalized collects this information to better understand and serve your business.</p>
+
+      <!-- Form -->
+      <form class="form" novalidate>
+        <div class="grid">
+          <!-- Program Name -->
+          <label class="field">
+            <span class="label">Program Name</span>
+            <input class="input" type="text" [(ngModel)]="selectedProgram" name="programName" />
+          </label>
+
+          <!-- Program Expenditure -->
+          <label class="field">
+            <span class="label">Program Expenditure</span>
+            <input class="input" type="tel" [(ngModel)]="programPrice" name="programExpenditure" />
+          </label>
+        </div>
+
+        <button type="button" class="btn" (click)="finalize()">Finalize →</button>
+      </form>
+
+    </div>
+
   </div>
 </ng-template>

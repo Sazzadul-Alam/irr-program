@@ -65,7 +65,7 @@
   position: relative;
   max-width: 820px;
   margin: 0 auto;
-  background: var(--card);
+  background: #ffffff7d;
   border-radius: 18px;
   box-shadow: var(--shadow);
   padding: 28px 28px 24px;
