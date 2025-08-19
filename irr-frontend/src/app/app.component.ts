@@ -11,7 +11,7 @@ import {parseJson} from "@angular/cli/src/utilities/json-file";
   standalone: true,
   imports: [RouterOutlet, CommonModule, FormsModule , HttpClientModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
   title = 'irr';
@@ -33,6 +33,8 @@ export class AppComponent implements OnInit {
   paymentMethods = [
     'bKash','Bank'
   ];
+  bank: any;
+  merchantNumber:any='01708491569';
   constructor(private http: HttpClient) {}
 
   ngOnInit() {

@@ -209,31 +209,56 @@
                    [value]="selectedProgram?.price || programPrice"
                    readonly />
           </label>
-          <label class="d-flex field">
-            <span>Payment Mode</span>
-            <select class="input"
-                    name="paymentMethod"
-                    [(ngModel)]="paymentMethod">
-              <option *ngFor="let m of paymentMethods" [value]="m">{{ m }}</option>
-            </select>
-
-          </label>
           <label class="field">
-            <span class="label"></span>
-            <div class="pay-inline mt-4">
-              <span>01732570221</span>
-              <span> (Merchant No.)</span>
+            <span class="label">Payment Mode</span>
+            <div class="pay-inline">
+              <select class="input" name="paymentMethod" [(ngModel)]="paymentMethod">
+                <option *ngFor="let m of paymentMethods" [value]="m">{{ m }}</option>
+              </select>
+              <ng-container *ngIf="paymentMethod === 'bKash'" class="pay-inline">
+                <strong class="merchant-no">{{ merchantNumber }}</strong>
+                <span class="muted">(Merchant No.)</span>
+              </ng-container>
+              <ng-container *ngIf="paymentMethod === 'Bank'">
+                <strong class="merchant-no">A/C: {{ bank.accountNo }}</strong>
+                <span class="muted">({{ bank.bankName }})</span>
+              </ng-container>
             </div>
           </label>
 
-          <div class="pay-instructions grid-span-2">
-            <ol>
-              <li>Select <strong>Make Payment</strong> option.</li>
-              <li>Provide DataSoft Merchant Wallet <strong>{{ merchantNo }}</strong>.</li>
-              <li>Pay the Program Expenditure.</li>
-              <li>Copy Transaction ID (Trx ID) and paste below.</li>
-            </ol>
-          </div>
+          <!-- Details + Instructions -->
+          <ng-container *ngIf="paymentMethod === 'bKash';">
+            <div class="pay-instructions grid-span-2">
+              <ol>
+                <li>Select <strong>Make Payment</strong> in bKash.</li>
+                <li>Provide DataSoft Merchant Wallet <strong>{{ merchantNo }}</strong>.</li>
+                <li>Pay the Program Expenditure.</li>
+                <li>Copy Transaction ID (Trx ID) and paste below.</li>
+              </ol>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="paymentMethod === 'Bank'">
+            <label class="field grid-span-2">
+              <span class="label">Bank Details</span>
+              <div class="bank-meta">
+                <span><strong>{{ bank.bankName }}</strong></span>
+                <span class="bullet">Account Name: <strong>{{ bank.accountName }}</strong></span>
+                <span class="bullet">A/C No: <strong>{{ bank.accountNo }}</strong></span>
+                <span class="bullet" *ngIf="bank.branch">Branch: <strong>{{ bank.branch }}</strong></span>
+                <span class="bullet" *ngIf="bank.routingNo">Routing: <strong>{{ bank.routingNo }}</strong></span>
+              </div>
+            </label>
+
+            <div class="pay-instructions grid-span-2">
+              <ol>
+                <li>Make a bank transfer/deposit to the account above.</li>
+                <li>Include your <strong>Name</strong> as payment reference.</li>
+                <li>Keep the deposit slip/transfer receipt.</li>
+                <li>Enter the <strong>Bank Reference / UTR</strong> number below.</li>
+              </ol>
+            </div>
+          </ng-container>
 
           <!-- Transaction ID -->
           <label class="field grid-span-2">
