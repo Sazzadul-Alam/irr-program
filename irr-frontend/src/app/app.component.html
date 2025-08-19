@@ -4,29 +4,53 @@
   <!-- Top breadcrumb -->
   <div class="crumb">
     <span>Course Registration</span>
-    <span class="badge">In progress</span>
+    <span class="badge" style="background:#d5dcf3!important;">In progress</span>
   </div>
 
   <!-- Card -->
-  <div class="card">
-    <div  class="stepper">
-      <div class="row dots">
-        <div class=" col-md-6">
-          <span class="dot active">1</span>
-          <!--          <span class="line"></span>-->
-          <div class="progress">
-            <div class="bar" style="width:10%"></div>
+  <div class="card" style="opacity: 0.855">
+    <!-- STEPPER -->
+    <div class="stepper-rail">
+      <ul class="steps">
+        <!-- STEP 1 -->
+        <li class="step"
+            [class.active]="step === 1"
+            [class.completed]="step > 1">
+          <div class="head">
+            <span class="dot">1</span>
+            <div class="track" aria-hidden="true">
+              <div class="fill"
+                   [style.width.%]="step === 1 ? progress : 100"></div>
+            </div>
           </div>
-        </div>
-        <div class="col-md-3">
+          <div class="caption">Information</div>
+        </li>
 
-        </div>
-        <div class="col-md-3"></div>
+        <!-- STEP 2 -->
+        <li class="step"
+            [class.active]="step === 2"
+            [class.completed]="step > 2">
+          <div class="head">
+            <span class="dot">2</span>
+            <div class="track" aria-hidden="true">
+              <div class="fill"
+                   [style.width.%]="step === 2 ? progress : (step > 2 ? 100 : 0)"></div>
+            </div>
+          </div>
+          <div class="caption">Payment</div>
+        </li>
 
-        <!--        <span class="line"></span>-->
-        <!--        <span class="dot">2</span>-->
-      </div>
+        <!-- STEP 3 -->
+        <li class="step" [class.active]="step === 3">
+          <div class="head">
+            <span class="dot">3</span>
+            <!-- no track after the last dot -->
+          </div>
+          <div class="caption">Complete</div>
+        </li>
+      </ul>
     </div>
+
     <!-- Stepper -->
     <!--    <div class="stepper">-->
     <!--      <div class="dots">-->

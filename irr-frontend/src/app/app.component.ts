@@ -26,7 +26,8 @@ export class AppComponent implements OnInit {
   trainingMode: string = '';
   selectedProgram: any = '';
   programPrice: any='';
-
+  step = 1;        // 1 | 2 | 3
+  progress = 30;
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
