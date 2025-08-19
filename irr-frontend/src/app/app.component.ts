@@ -26,10 +26,13 @@ export class AppComponent implements OnInit {
   trainingMode: string = '';
   selectedProgram: any = '';
   programPrice: any='';
-  paymentMethod = 'bKash';
+  paymentMethod = '';
   transactionId :any = '';
   step = 1;        // 1 | 2 | 3
   progress = 30;
+  paymentMethods = [
+    'bKash','Bank'
+  ];
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
@@ -91,17 +94,39 @@ export class AppComponent implements OnInit {
 
     console.log("FormData to send:", formData);
 
-    this.http.post('http://localhost:9000/irrcont/save', formData)
-      .subscribe({
-        next: (res) => {
-          console.log(" successful:", res);
-          alert("Enrollment successful!");
-        },
-        error: (err) => {
-          console.error("Error while enrolling:", err);
-          alert("Something went wrong. Please try again.");
+    this.http.post('http://localhost:9000/irrcont/save', formData).subscribe(
+      (res: any) => {
+          this.name='';
+          this.contactNumber='';
+          this.email='';
+          this.trainingMode='';
+          this.selectedProgram='';
+          this.programPrice='';
+          this.paymentMethod='';
+          this.transactionId='';
+         this.step=1;
+         this.showNextCard=false;
+        }, () => {
+        this.name='';
+        this.contactNumber='';
+        this.email='';
+        this.trainingMode='';
+        this.selectedProgram='';
+        this.programPrice='';
+        this.paymentMethod='';
+        this.transactionId='';
+        this.step=1;
+        this.showNextCard=false;
         }
-      });
+      );
   }
 
+  get merchantNo(): string {
+    return this.paymentMethod === 'bkash' ? '01708 491 569' : '';
+  }
+
+  goBack() {
+    this.step=1;
+    this.showNextCard=false;
+  }
 }

@@ -2,10 +2,10 @@
 
 <div class="page" *ngIf="!showNextCard; else nextCard">
   <!-- Top breadcrumb -->
-  <div class="crumb">
-    <span><b>Course Registration</b></span>
-    <span class="badge" style="background:#d5dcf3!important;">In progress</span>
+  <div class="ml-5 mt-2">
+    <span style="color: #3E3C91"><b>IRR Training Program Enrolment</b></span>
   </div>
+  <hr>
 
   <!-- Card -->
   <div class="card" style="opacity: 0.855">
@@ -50,20 +50,6 @@
         </li>
       </ul>
     </div>
-
-    <!-- Stepper -->
-    <!--    <div class="stepper">-->
-    <!--      <div class="dots">-->
-    <!--        <span class="dot active">1</span>-->
-    <!--        <span class="line"></span>-->
-    <!--        <span class="dot">2</span>-->
-    <!--      </div>-->
-    <!--      <div class="progress">-->
-    <!--        <div class="bar" style="width: 50%"></div>-->
-    <!--      </div>-->
-    <!--    </div>-->
-
-    <!-- Title -->
     <h2 class="title">IRR Training Program Enrollment</h2>
     <p class="sub">Digitalized collects this information to better understand and serve your business.</p>
 
@@ -148,17 +134,25 @@
 
 <ng-template #nextCard>
   <div class="page">
-    <!-- Second form content -->
 
-
-    <!-- Top breadcrumb -->
-    <div class="crumb">
-      <span>Course Registration</span>
-      <span class="badge">In progress</span>
+    <div class="ml-5 mt-2">
+      <span style="color: #3E3C91"><b>IRR Training Program Enrolment</b></span>
     </div>
+    <hr>
 
     <!-- Card -->
     <div class="card">
+      <div class="mb-2">
+      <button
+        type="button"
+        class="back-btn"
+        (click)="goBack()"
+        aria-label="Back to Information"
+      >
+        <span class="arrow">←</span>
+        Back
+      </button>
+      </div>
       <div class="stepper-rail">
         <ul class="steps">
           <!-- STEP 1 -->
@@ -198,63 +192,81 @@
           </li>
         </ul>
       </div>
-      <h2 class="title">IRR Training Program Enrollment</h2>
-      <p class="sub">Digitalized collects this information to better understand and serve your business.</p>
 
-      <!-- Form -->
       <form class="form" novalidate>
         <div class="grid">
-          <!-- Program Name -->
+          <!-- Program Name (readonly) -->
           <label class="field">
             <span class="label">Program Name</span>
-            <input class="input" type="text" [(ngModel)]="selectedProgram" name="programName" />
+            <input class="input" type="text"
+                   [value]="selectedProgram"
+                   readonly />
           </label>
 
-          <!-- Program Expenditure -->
           <label class="field">
             <span class="label">Program Expenditure</span>
-            <input class="input" type="tel" [(ngModel)]="programPrice" name="programExpenditure" />
+            <input class="input" type="text"
+                   [value]="selectedProgram?.price || programPrice"
+                   readonly />
           </label>
-
-          <label class="field">
-            <span class="label">Payment Method</span>
-            <select class="input" name="paymentMethod" [(ngModel)]="paymentMethod" disabled>
-              <option [value]="paymentMethod">{{ paymentMethod }}</option>
+          <label class="d-flex field">
+            <span>Payment Mode</span>
+            <select class="input"
+                    name="paymentMethod"
+                    [(ngModel)]="paymentMethod">
+              <option *ngFor="let m of paymentMethods" [value]="m">{{ m }}</option>
             </select>
+
           </label>
-
-          <label>
-            <span >
-            01708 491 569 (Merchant No.)
-            </span>
-          </label>
-
-<!--          <div class="instructions">-->
-<!--            <ul class="steps">-->
-<!--              <li>Step 1: Select <strong>Make Payment</strong> option.</li>-->
-<!--              <li>Step 2: Provide DataSoft Merchant Wallet <strong>01708 491 569</strong>.</li>-->
-<!--              <li>Step 3: Pay the Program Expenditure.</li>-->
-<!--              <li>Step 4: Copy Transaction ID (Trx ID) and paste below.</li>-->
-<!--            </ul>-->
-<!--          </div>-->
-
-
           <label class="field">
-            <span class="label">Transaction ID </span>
+            <span class="label"></span>
+            <div class="pay-inline mt-4">
+              <span>01732570221</span>
+              <span> (Merchant No.)</span>
+            </div>
+          </label>
+
+          <div class="pay-instructions grid-span-2">
+            <ol>
+              <li>Select <strong>Make Payment</strong> option.</li>
+              <li>Provide DataSoft Merchant Wallet <strong>{{ merchantNo }}</strong>.</li>
+              <li>Pay the Program Expenditure.</li>
+              <li>Copy Transaction ID (Trx ID) and paste below.</li>
+            </ol>
+          </div>
+
+          <!-- Transaction ID -->
+          <label class="field grid-span-2">
+            <span class="label">Transaction ID</span>
             <input
               class="input"
               type="text"
-              [(ngModel)]="transactionId"
+              placeholder="Type 10 letters Trx ID"
               name="transactionId"
+              [(ngModel)]="transactionId"
+              required
+              #trx="ngModel"
             />
+            <div class="error" *ngIf="trx.touched && trx.invalid">
+              <span *ngIf="trx.errors?.['required']">Transaction ID is required.</span>
+            </div>
           </label>
-
         </div>
 
-        <button type="button" class="btn" (click)="finalize()">Finalize →</button>
+        <button type="button"
+                class="btn"
+                [disabled]="trx.invalid || !transactionId"
+                (click)="finalize()">
+          Submit For Enrollment
+        </button>
       </form>
 
+
     </div>
+    <footer >
+      <div class="footer-logo">
+      </div>
+    </footer>
 
   </div>
 </ng-template>

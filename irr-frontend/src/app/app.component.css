@@ -138,7 +138,7 @@
   padding: 12px 16px;
   font-weight: 700;
   font-size: 14px;
-  background: linear-gradient(90deg, var(--primary), var(--primary-2));
+  background: linear-gradient(90deg, #4A3AFF, #4A3AFF);
   color: #fff;
   cursor: pointer;
   transition: transform .05s ease, filter .2s ease;
@@ -253,10 +253,85 @@
   .step .track .fill { transition: none; }
 }
 .footer-logo {
-  max-width: 820px;
+  position: fixed;          /* sticks to viewport */
+  right: 20px;              /* distance from right edge */
+  bottom: 20px;             /* distance from bottom */
+  width: 120px;             /* adjust to your SVG */
   height: 48px;
-  background: url("../assets/image/DS logo.svg") no-repeat;
+  background: url("../assets/image/DS logo.svg") no-repeat right center;
   background-size: contain;
+  z-index: 1000;            /* stay above background */
 }
 
+/* Row with select + merchant number */
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 16px;
+}
 
+.merchant {
+  align-self: end;
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+.merchant strong {
+  color: #1f2937;
+  letter-spacing: .2px;
+}
+
+/* Instructions box */
+.pay-instructions {
+  background: rgba(91,108,255, .06);
+  border: 1px solid rgba(91,108,255, .12);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.pay-instructions ol {
+  margin: 0;
+  padding-left: 18px;
+}
+.pay-instructions li { margin: 2px 0; }
+
+/* Readonly inputs look intentional */
+.input[readonly] {
+  background: #f1f5ff;
+  border-color: #c7d2fe;
+}
+
+/* Validation (from earlier suggestion, in case you didn’t add it yet) */
+.input.ng-touched.ng-invalid {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, .15);
+}
+.error { color: #b91c1c; font-size: 12px; line-height: 1.2; }
+.card-toolbar {
+  max-width: 820px;         /* align with .card */
+  margin: 8px auto 6px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: background .15s ease, box-shadow .15s ease, transform .05s ease;
+}
+.back-btn:hover { background: #f8faff; }
+.back-btn:active { transform: translateY(1px); }
+.back-btn:focus-visible { outline: none; box-shadow: 0 0 0 4px var(--ring); }
+
+.back-btn .arrow { font-size: 16px; line-height: 1; }
