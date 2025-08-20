@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
   }
 
   getProgram() {
-    return this.http.get<string[]>('http://localhost:9000/irrcont/program');
+    return this.http.get<string[]>('http://192.168.14.136:8282/webservice/irrcont/program');
   }
 
 
@@ -96,7 +96,7 @@ export class AppComponent implements OnInit {
 
     console.log("FormData to send:", formData);
 
-    this.http.post('http://localhost:9000/irrcont/save', formData).subscribe(
+    this.http.post('http://192.168.14.136:8282/webservice/irrcont/save', formData).subscribe(
       (res: any) => {
           this.name='';
           this.contactNumber='';
