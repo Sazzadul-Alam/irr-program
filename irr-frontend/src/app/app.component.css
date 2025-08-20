@@ -1,4 +1,4 @@
-/* --- Base & Layout --- */
+/* ===== Base & Layout ===== */
 :host {
   --bg: #f6f7fb;
   --card: #ffffff;
@@ -19,94 +19,38 @@
 .page {
   min-height: 100vh;
   background: url("../assets/image/background.svg") no-repeat;
-  background-size: cover;   /* optional */
+  background-size: cover;
   position: relative;
-  /*overflow: hidden;*/
   padding: 32px 16px 80px;
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
   color: var(--text);
 }
 
-/* --- Decorative angled stripes --- */
-.stripe {
-  position: absolute;
-  left: -8%;
-  right: -8%;
-  height: 64px;
-  transform: skewX(-18deg);
-  opacity: .55;
-  pointer-events: none;
-  filter: blur(.2px);
-}
-.stripe-1 { top: 120px; background: linear-gradient(90deg, #d9dbff, #a6adff); }
-.stripe-2 { top: 170px; background: linear-gradient(90deg, #c3a8ff, #9a7bff); height: 52px; left: -12%; right: -12%; }
-.stripe-3 { top: 230px; background: linear-gradient(90deg, #e8e9ff, #c6cbff); height: 44px; left: -20%; right: -20%; opacity: .7; }
-
-/* --- Breadcrumb --- */
-.crumb {
-  max-width: 820px;
-  margin: 0 auto 14px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  font-size: 13px;
-  color: var(--muted);
-}
-.badge {
-  background: #eef2ff;
-  color: #4f46e5;
-  border-radius: 999px;
-  padding: 2px 8px;
-  font-weight: 600;
-}
-
-/* --- Card --- */
+/* ===== Card ===== */
 .card {
   position: relative;
-  width: 600px;
+  width: 100%;
+  max-width: 640px;
   margin: 0 auto;
   background: #ffffff7d;
   border-radius: 18px;
   box-shadow: var(--shadow);
   padding: 28px 28px 24px;
+  overflow: hidden; /* avoid horizontal scroll on small screens */
 }
 
-/* --- Stepper --- */
-.stepper { margin-bottom: 6px; }
-.dots {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.dot {
-  width: 28px; height: 28px; display: grid; place-items: center;
-  border-radius: 999px; background: #eef2ff; color: #6366f1; font-weight: 700; font-size: 14px;
-}
-.dot.active { background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: #fff; }
-.line {
-  flex: 1; height: 4px; border-radius: 999px; background: #eef2ff;
-}
-.progress {
-  height: 4px; background: #f1f5f9; border-radius: 999px; margin-top: 10px; overflow: hidden;
-}
-.progress .bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--primary), var(--primary-2));
-  border-radius: inherit;
-}
-
-/* --- Titles --- */
+/* ===== Titles ===== */
 .title { margin: 14px 0 4px; font-size: 20px; font-weight: 700; letter-spacing: .2px; }
 .sub { margin: 0 0 18px; color: var(--muted); font-size: 13px; }
 
-/* --- Form --- */
+/* ===== Form ===== */
 .form { margin-top: 8px; }
+
 .grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 14px 16px;
 }
-
 @media (min-width: 720px) {
   .grid { grid-template-columns: 1fr 1fr; }
   .grid .grid-span-2 { grid-column: span 2; }
@@ -119,8 +63,9 @@
   width: 100%;
   border: 1px solid #e5e7eb;
   border-radius: 10px;
-  padding: 10px 12px;
-  font-size: 14px;
+  padding: 12px 14px;
+  font-size: 16px;               /* prevents iOS zoom on focus */
+  min-height: 44px;              /* finger-friendly */
   outline: none;
   background: #fff;
   transition: border-color .2s, box-shadow .2s, background .2s;
@@ -129,16 +74,27 @@
   border-color: var(--primary);
   box-shadow: 0 0 0 4px var(--ring);
 }
+.input[readonly] {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
 
-/* --- Button --- */
+/* Validation */
+.input.ng-touched.ng-invalid {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, .15);
+}
+.error { color: #b91c1c; font-size: 12px; line-height: 1.2; }
+
+/* ===== Button ===== */
 .btn {
   margin-top: 18px;
   width: 100%;
   border: 0;
-  border-radius: 12px;
-  padding: 12px 16px;
+  border-radius: 14px;
+  padding: 14px 18px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   background: linear-gradient(90deg, #4A3AFF, #4A3AFF);
   color: #fff;
   cursor: pointer;
@@ -147,28 +103,9 @@
 .btn:hover { filter: brightness(1.02); }
 .btn:active { transform: translateY(1px); }
 
-/* --- Footer logo (placeholder) --- */
-
-.logo {
-  max-width: 820px;
-  margin: 18px auto 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #6b7280;
-  font-size: 12px;
-}
-.logo strong {
-  background: #f1f5ff;
-  color: #4f46e5;
-  border: 1px solid #e0e7ff;
-  padding: 6px 10px;
-  border-radius: 6px;
-}
-.logo span { opacity: .85; }
-/* --- Stepper (screenshot style) --- */
+/* ===== Stepper (rail + dots) ===== */
 .stepper-rail {
-  background: #f1f3ff;           /* soft rail background like the screenshot */
+  background: #f1f3ff;
   border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 8px;
@@ -177,7 +114,7 @@
 .steps {
   list-style: none;
   display: grid;
-  grid-template-columns: 2fr 2fr 0fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 16px;
   padding: 0;
   margin: 0;
@@ -189,7 +126,7 @@
   grid-template-rows: auto auto;
   justify-items: start;
   gap: 8px;
-  color: #94a3b8;                /* muted captions by default */
+  color: #94a3b8;
 }
 
 .step .head {
@@ -204,19 +141,17 @@
   display: grid; place-items: center;
   border-radius: 999px;
   font-weight: 700; font-size: 14px;
-  background: #cbd5e1;           /* inactive circle */
+  background: #cbd5e1;
   color: #ffffff;
 }
 
-/* short line to the right of the dot */
 .step .track {
   flex: 1;
   height: 6px;
-  background: #e8ecff;           /* inactive line */
+  background: #e8ecff;
   border-radius: 999px;
   overflow: hidden;
 }
-
 .step .track .fill {
   height: 100%;
   width: 0%;
@@ -225,66 +160,54 @@
   transition: width .25s ease;
 }
 
-/* Active (current step) */
 .step.active .dot {
   background: linear-gradient(135deg, var(--primary), var(--primary-2));
 }
 .step.active .caption {
-  color: #475569;                 /* slightly stronger text for active */
+  color: #475569;
   font-weight: 600;
 }
 
-/* Completed (past steps) */
 .step.completed .dot {
-  background: #94a3f8;            /* completed look (soft indigo) */
+  background: #94a3f8;
 }
 .step.completed .track { background: #dfe5ff; }
 .step.completed .track .fill { width: 100%; }
 
-/* Last step: no trailing rail */
 .step:last-child .track { display: none; }
 
-/* Captions under dots */
 .step .caption {
   font-size: 12px;
   line-height: 1;
 }
 
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .step .track .fill { transition: none; }
-}
-.footer-logo {
-  position: fixed;          /* sticks to viewport */
-  right: 20px;              /* distance from right edge */
-  bottom: 20px;             /* distance from bottom */
-  width: 120px;             /* adjust to your SVG */
-  height: 48px;
-  background: url("../assets/image/DS logo.svg") no-repeat right center;
-  background-size: contain;
-  z-index: 1000;            /* stay above background */
-}
-
-/* Row with select + merchant number */
-.field-row {
+/* ===== Payment UI ===== */
+.pay-inline {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: end;
-  gap: 16px;
+  gap: 8px 12px;
 }
 
-.merchant {
+.merchant-no {
   align-self: end;
-  color: var(--muted);
-  font-size: 13px;
-  white-space: nowrap;
-}
-.merchant strong {
   color: #1f2937;
+  font-size: 14px;
+  white-space: nowrap;
   letter-spacing: .2px;
 }
+.muted { color: var(--muted); font-size: 13px; white-space: nowrap; }
 
-/* Instructions box */
+.bank-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+.bank-meta .bullet::before {
+  content: "• ";
+  color: #9aa0a6;
+}
+
 .pay-instructions {
   background: rgba(91,108,255, .06);
   border: 1px solid rgba(91,108,255, .12);
@@ -299,30 +222,12 @@
 }
 .pay-instructions li { margin: 2px 0; }
 
-/* Readonly inputs look intentional */
-.input[readonly] {
-  background: #f1f5ff;
-  border-color: #c7d2fe;
-}
-
-/* Validation (from earlier suggestion, in case you didn’t add it yet) */
-.input.ng-touched.ng-invalid {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 4px rgba(239, 68, 68, .15);
-}
-.error { color: #b91c1c; font-size: 12px; line-height: 1.2; }
-.card-toolbar {
-  max-width: 820px;         /* align with .card */
-  margin: 8px auto 6px;
-  display: flex;
-  justify-content: flex-start;
-}
-
+/* ===== Back button ===== */
 .back-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 10px 12px;
   border-radius: 10px;
   border: 1px solid #e5e7eb;
   background: #fff;
@@ -331,9 +236,56 @@
   cursor: pointer;
   box-shadow: var(--shadow);
   transition: background .15s ease, box-shadow .15s ease, transform .05s ease;
+  touch-action: manipulation;
 }
 .back-btn:hover { background: #f8faff; }
 .back-btn:active { transform: translateY(1px); }
 .back-btn:focus-visible { outline: none; box-shadow: 0 0 0 4px var(--ring); }
-
 .back-btn .arrow { font-size: 16px; line-height: 1; }
+
+/* ===== Footer logo ===== */
+.footer-logo {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 120px;
+  height: 48px;
+  background: url("../assets/image/DS logo.svg") no-repeat right center;
+  background-size: contain;
+  z-index: 1000;
+}
+
+/* ===== Mobile (<= 480px) ===== */
+@media (max-width: 480px) {
+  .page { padding: 20px 12px 72px; }
+
+  .title { font-size: 18px; }
+  .sub { font-size: 12px; }
+
+  .grid { gap: 12px; }
+
+  .stepper-rail { padding: 10px 12px; }
+  .steps { gap: 10px; }
+  .step .dot { width: 26px; height: 26px; font-size: 13px; }
+  .step .track { height: 5px; }
+  .step .caption { font-size: 11px; }
+
+  .pay-inline { grid-template-columns: 1fr; }    /* select on its own row */
+  .merchant-no, .muted { margin-top: -6px; }
+
+  .bank-meta { flex-direction: column; gap: 4px; }
+  .bank-meta .bullet::before { content: ""; }    /* remove bullets in stacked mode */
+
+  .pay-instructions { padding: 10px 12px; font-size: 12px; }
+
+  .footer-logo { display: none; }                /* tuck away on phones */
+
+  /* If utility classes like ml-5/mt-2 exist in your stack, neutralize them on mobile */
+  .ml-5, .mt-2 { margin-left: 0 !important; }
+}
+
+/* ===== Very small devices (<= 360px) ===== */
+@media (max-width: 360px) {
+  .step .caption { display: none; }              /* keep dots compact */
+  .steps { gap: 8px; }
+}

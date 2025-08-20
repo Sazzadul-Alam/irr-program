@@ -46,11 +46,8 @@ export class AppComponent implements OnInit {
     this.getProgram().subscribe({
       next: (data: any) => {
         this.programs = data;
-
-        console.log('Programs:', this.programs);
       },
       error: (err) => {
-        console.error('Error fetching programs', err);
       }
     });
   }
@@ -69,8 +66,6 @@ export class AppComponent implements OnInit {
     if (selected) {
       this.selectedProgram = program;
       this.programPrice = selected.price;
-      console.log('Selected Program:', this.selectedProgram);
-      console.log('Program Price:', this.programPrice);
     }
   }
 
@@ -93,8 +88,6 @@ export class AppComponent implements OnInit {
     formData.append("programPrice", this.programPrice.toString());
     formData.append("paymentMethod", this.paymentMethod);
     formData.append("transactionId", this.transactionId);
-
-    console.log("FormData to send:", formData);
 
     this.http.post('http://192.168.14.136:8282/webservice/irrcont/save', formData).subscribe(
       (res: any) => {
