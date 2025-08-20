@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   programs: { id: number; program_name: string; price: number }[] = [];
   modes: string[] = [];
   showNextCard: boolean = false;
+  showLastCard:boolean=false;
 
   name: string = '';
   contactNumber: string = '';
@@ -53,7 +54,7 @@ export class AppComponent implements OnInit {
   }
 
   getProgram() {
-    return this.http.get<string[]>('http://192.168.14.136:8282/webservice/irrcont/program');
+    return this.http.get<string[]>('/webservice/irrcont/program');
   }
 
 
@@ -69,14 +70,21 @@ export class AppComponent implements OnInit {
     }
   }
 
+  formError = '';
+
+
   validate() {
-    if (this.name && this.contactNumber && this.email && this.trainingMode && this.selectedProgram) {
+    const ok = this.name && this.contactNumber && this.email && this.trainingMode && this.selectedProgram;
+    if (ok) {
       this.showNextCard = true;
-      this.step=2;
+      this.step = 2;
+      this.formError = '';
     } else {
-      alert('Please fill all fields before proceeding.');
+      this.showFormError('⚠ Please fill all fields before proceeding.');
     }
   }
+
+
 
   finalize() {
     const formData = new FormData();
@@ -89,7 +97,7 @@ export class AppComponent implements OnInit {
     formData.append("paymentMethod", this.paymentMethod);
     formData.append("transactionId", this.transactionId);
 
-    this.http.post('http://192.168.14.136:8282/webservice/irrcont/save', formData).subscribe(
+    this.http.post('/webservice/irrcont/save', formData).subscribe(
       (res: any) => {
           this.name='';
           this.contactNumber='';
@@ -99,8 +107,8 @@ export class AppComponent implements OnInit {
           this.programPrice='';
           this.paymentMethod='';
           this.transactionId='';
-         this.step=1;
-         this.showNextCard=false;
+         this.step=3;
+         this.showLastCard=true;
         }, () => {
         this.name='';
         this.contactNumber='';
@@ -110,8 +118,9 @@ export class AppComponent implements OnInit {
         this.programPrice='';
         this.paymentMethod='';
         this.transactionId='';
-        this.step=1;
-        this.showNextCard=false;
+        this.step=3;
+        this.showLastCard=true;
+        this.selectedFile=null;
         }
       );
   }
@@ -124,4 +133,106 @@ export class AppComponent implements OnInit {
     this.step=1;
     this.showNextCard=false;
   }
+
+  done() {
+    this.step=1;
+    this.showNextCard=false;
+    this.showLastCard=false;
+  }
+  // Add to your AppComponent class:
+
+  selectedFile: File | null = null;
+  fileError = '';
+  previewUrl: string | ArrayBuffer | null = null;
+  isImage = false;
+
+  uploading = false;
+  uploadProgress = 0;
+  uploadOk = false; // set true after server confirms upload
+
+  onFileSelected(evt: Event) {
+    this.fileError = '';
+    this.previewUrl = null;
+    this.isImage = false;
+    this.uploadOk = false; // reset upload state when picking a new file
+
+    const input = evt.target as HTMLInputElement;
+    const file = input.files && input.files[0];
+    if (!file) { this.selectedFile = null; return; }
+
+    // Validate size: <= 5MB
+    const MAX = 5 * 1024 * 1024; // 5MB
+    if (file.size > MAX) {
+      this.fileError = 'File is larger than 5MB.';
+      this.selectedFile = null;
+      return;
+    }
+
+    // Validate type: image/jpeg, image/png, application/pdf
+    const okTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+    if (!okTypes.includes(file.type)) {
+      this.fileError = 'Only PNG, JPG, or PDF files are allowed.';
+      this.selectedFile = null;
+      return;
+    }
+
+    this.selectedFile = file;
+    this.isImage = file.type.startsWith('image/');
+
+    // Show preview for images
+    if (this.isImage) {
+      const reader = new FileReader();
+      reader.onload = () => (this.previewUrl = reader.result);
+      reader.readAsDataURL(file);
+    }
+  }
+
+  uploadSelectedFile() {
+    if (!this.selectedFile) { return; }
+    if (!this.transactionId) {
+      this.fileError = 'Enter Transaction ID before uploading.';
+      return;
+    }
+    if (this.fileError) { return; }
+
+    const form = new FormData();
+    form.append('file', this.selectedFile);
+    form.append('transactionId', this.transactionId);
+
+    // show progress
+    this.uploading = true;
+    this.uploadProgress = 0;
+    this.uploadOk = false;
+
+    this.http.post('/webservice/irrcont/uploadLocal', form, {
+      reportProgress: true,
+      observe: 'events'
+    }).subscribe({
+      next: (event: any) => {
+        if (event.type === 1 && event.total) {
+          // HttpEventType.UploadProgress === 1
+          this.uploadProgress = Math.round((event.loaded / event.total) * 100);
+        } else if (event.type === 4) {
+          // HttpEventType.Response === 4
+          this.uploading = false;
+          this.uploadOk = true;
+        }
+      },
+      error: (err) => {
+        this.uploading = false;
+        this.uploadOk = false;
+        this.fileError = 'Upload failed. Please try again.';
+      }
+    });
+  }
+
+  private _errTimer: any;
+
+  private showFormError(msg: string) {
+    this.formError = msg;
+    // auto-hide after 4s
+    if (this._errTimer) { clearTimeout(this._errTimer); }
+    this._errTimer = setTimeout(() => this.formError = '', 4000);
+  }
+
 }

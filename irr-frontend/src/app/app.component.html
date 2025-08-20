@@ -1,4 +1,3 @@
-
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
 <div class="page" *ngIf="!showNextCard; else nextCard">
@@ -51,15 +50,12 @@
         </li>
       </ul>
     </div>
-    <h2 class="title">IRR Training Program Enrollment</h2>
-    <p class="sub">Digitalized collects this information to better understand and serve your business.</p>
-
     <!-- Form -->
     <form class="form" novalidate>
       <div class="grid">
         <!-- Name -->
         <label class="field">
-          <span class="label">Name</span>
+          <span class="label">Name*</span>
           <input
             class="input"
             type="text"
@@ -70,7 +66,7 @@
 
         <!-- Contact Number -->
         <label class="field">
-          <span class="label">Contact Number</span>
+          <span class="label">Contact Number*</span>
           <input
             class="input"
             type="tel"
@@ -81,7 +77,7 @@
 
         <!-- Email -->
         <label class="field">
-          <span class="label">Email Address</span>
+          <span class="label">Email Address*</span>
           <input
             class="input"
             type="email"
@@ -94,7 +90,7 @@
 
         <!-- Training Mode -->
         <label class="field">
-          <span class="label">Training Mode</span>
+          <span class="label">Training Mode*</span>
           <select
             class="input"
             name="trainingMode"
@@ -107,7 +103,7 @@
         </label>
 
         <label class="field grid-span-2">
-          <span class="label">Program Selection</span>
+          <span class="label">Program Selection*</span>
           <select class="input" name="program" [(ngModel)]="selectedProgram"
                   (change)="setSelectedProgram(selectedProgram)">
             <option value="" disabled selected>Select</option>
@@ -118,11 +114,14 @@
         </label>
 
       </div>
+      <div *ngIf="formError as msg" class="form-tooltip" role="alert" aria-live="polite">
+        {{ msg }}
+      </div>
 
       <button type="button" class="btn" (click)="validate()">Proceed for Payment →</button>
     </form>
   </div>
-  <footer >
+  <footer>
     <div class="footer-logo">
     </div>
   </footer>
@@ -130,11 +129,8 @@
 </div>
 
 
-
-
-
 <ng-template #nextCard>
-  <div class="page">
+  <div class="page" *ngIf="!showLastCard; else lastCard">
 
     <div class="ml-5 mt-2">
       <span style="color: #3E3C91"><b>IRR Training Program Enrolment</b></span>
@@ -144,15 +140,15 @@
     <!-- Card -->
     <div class="card">
       <div class="mb-2">
-      <button
-        type="button"
-        class="back-btn"
-        (click)="goBack()"
-        aria-label="Back to Information"
-      >
-        <span class="arrow">←</span>
-        Back
-      </button>
+        <button
+          type="button"
+          class="back-btn"
+          (click)="goBack()"
+          aria-label="Back to Information"
+        >
+          <span class="arrow">←</span>
+          Back
+        </button>
       </div>
       <div class="stepper-rail">
         <ul class="steps">
@@ -201,29 +197,29 @@
             <span class="label">Program Name</span>
             <input class="input" type="text"
                    [value]="selectedProgram"
-                   readonly />
+                   readonly/>
           </label>
 
           <label class="field">
             <span class="label">Program Expenditure</span>
             <input class="input" type="text"
                    [value]="selectedProgram?.price || programPrice"
-                   readonly />
+                   readonly/>
           </label>
           <label class="field">
-            <span class="label">Payment Mode</span>
+            <span class="label">Payment Mode*</span>
             <div class="pay-inline">
               <select class="input" name="paymentMethod" [(ngModel)]="paymentMethod">
                 <option *ngFor="let m of paymentMethods" [value]="m">{{ m }}</option>
               </select>
-<!--              <ng-container *ngIf="paymentMethod === 'bKash'" class="pay-inline">-->
-<!--                <strong class="merchant-no">{{ merchantNumber }}</strong>-->
-<!--                <span class="muted">(Merchant No.)</span>-->
-<!--              </ng-container>-->
-<!--              <ng-container *ngIf="paymentMethod === 'Bank'">-->
-<!--                <strong class="merchant-no">A/C: {{ bank.accountNo }}</strong>-->
-<!--                <span class="muted">({{ bank.bankName }})</span>-->
-<!--              </ng-container>-->
+              <!--              <ng-container *ngIf="paymentMethod === 'bKash'" class="pay-inline">-->
+              <!--                <strong class="merchant-no">{{ merchantNumber }}</strong>-->
+              <!--                <span class="muted">(Merchant No.)</span>-->
+              <!--              </ng-container>-->
+              <!--              <ng-container *ngIf="paymentMethod === 'Bank'">-->
+              <!--                <strong class="merchant-no">A/C: {{ bank.accountNo }}</strong>-->
+              <!--                <span class="muted">({{ bank.bankName }})</span>-->
+              <!--              </ng-container>-->
             </div>
           </label>
 
@@ -234,7 +230,7 @@
                 <li>Payment Instruction: Please make the program expenditure payment via bKash “Send Money”
                   to the Datasoft wallet and provide the Trx ID below .
                 </li>
-                <li>bKash: 01708491569 </li>
+                <li>bKash: 01708491569</li>
               </ol>
             </div>
           </ng-container>
@@ -263,7 +259,7 @@
 
           <!-- Transaction ID -->
           <label class="field grid-span-2">
-            <span class="label">Transaction ID</span>
+            <span class="label">Transaction ID*</span>
             <input
               class="input"
               type="text"
@@ -277,22 +273,110 @@
               <span *ngIf="trx.errors?.['required']">Transaction ID is required.</span>
             </div>
           </label>
+          <label class="field grid-span-2">
+            <span class="label">Upload Receipt/Image (PNG/JPG/PDF, max 5MB)*</span>
+
+            <input
+              class="input"
+              type="file"
+              accept=".png,.jpg,.jpeg,.pdf,application/pdf,image/png,image/jpeg"
+              (change)="onFileSelected($event)"
+            />
+
+            <!-- Preview for image -->
+            <div *ngIf="previewUrl && isImage" style="margin-top:8px;">
+              <img [src]="previewUrl" alt="Preview" style="max-width:180px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.08)" />
+            </div>
+
+            <!-- Filename for PDF -->
+            <div *ngIf="selectedFile && !isImage" style="margin-top:8px;color:#6b7280;">
+              Selected: <strong>{{ selectedFile?.name }}</strong>
+            </div>
+
+            <!-- Error -->
+            <div class="error" *ngIf="fileError" style="margin-top:6px;">
+              {{ fileError }}
+            </div>
+          </label>
         </div>
 
         <button type="button"
                 class="btn"
-                [disabled]="trx.invalid || !transactionId"
-                (click)="finalize()">
+                [disabled]="trx.invalid || !transactionId || paymentMethod==''||selectedFile==null"
+                (click)="finalize();uploadSelectedFile()">
           Submit For Enrollment
         </button>
       </form>
 
 
     </div>
-    <footer >
+    <footer>
       <div class="footer-logo">
       </div>
     </footer>
 
   </div>
+  <ng-template #lastCard>
+    <div class="page">
+
+      <div class="ml-5 mt-2">
+        <span style="color: #3E3C91"><b>IRR Training Program Enrolment</b></span>
+
+      </div>
+      <hr>
+      <div class="card">
+        <div class="stepper-rail">
+          <ul class="steps">
+            <!-- STEP 1 -->
+            <li class="step"
+                [class.active]="step === 1"
+                [class.completed]="step > 1">
+              <div class="head">
+                <span class="dot">1</span>
+                <div class="track" aria-hidden="true">
+                  <div class="fill"
+                       [style.width.%]="step === 1 ? progress : 100"></div>
+                </div>
+              </div>
+              <div class="caption">Information</div>
+            </li>
+
+            <li class="step"
+                [class.active]="step === 2"
+                [class.completed]="step > 2">
+              <div class="head">
+                <span class="dot">2</span>
+                <div class="track" aria-hidden="true">
+                  <div class="fill"
+                       [style.width.%]="step === 2 ? progress : (step > 2 ? 100 : 0)"></div>
+                </div>
+              </div>
+              <div class="caption">Payment</div>
+            </li>
+
+            <!-- STEP 3 -->
+            <li class="step" [class.active]="step === 3">
+              <div class="head">
+                <span class="dot">3</span>
+                <!-- no track after the last dot -->
+              </div>
+              <div class="caption">Complete</div>
+            </li>
+          </ul>
+        </div>
+        <div class="complete-wrap" *ngIf="step === 3" aria-live="polite">
+          <h3 class="thanks-title">Thank You!</h3>
+          <p class="thanks-sub">
+            Your request is currently being processed.<br>
+            You will be notified after the verification is completed.
+          </p>
+          <button type="button" class="btn" (click)="done()">Done</button>
+        </div>
+      </div>
+      <footer>
+        <div class="footer-logo">
+        </div>
+      </footer>
+    </div>
+  </ng-template>
 </ng-template>

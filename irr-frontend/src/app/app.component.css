@@ -92,7 +92,6 @@
   width: 100%;
   border: 0;
   border-radius: 14px;
-  padding: 14px 18px;
   font-weight: 700;
   font-size: 16px;
   background: linear-gradient(90deg, #4A3AFF, #4A3AFF);
@@ -114,7 +113,7 @@
 .steps {
   list-style: none;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 2fr 2fr 1fr;
   gap: 16px;
   padding: 0;
   margin: 0;
@@ -288,4 +287,78 @@
 @media (max-width: 360px) {
   .step .caption { display: none; }              /* keep dots compact */
   .steps { gap: 8px; }
+}
+/* --- Complete screen --- */
+.card.card-complete {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Soft top gradient like the mock */
+.card.card-complete::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(91,108,255,0.10) 0%, rgba(91,108,255,0.04) 60%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Centered content */
+.complete-wrap {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  min-height: 320px; /* enough space to feel airy on desktop */
+  gap: 10px;
+  padding: 24px 12px 8px;
+}
+
+/* Typography matches the mock feel */
+.thanks-title {
+  margin: 16px 0 6px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #2a2e75;
+  letter-spacing: 0.2px;
+}
+
+.thanks-sub {
+  margin: 0 0 18px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Button already styled via .btn; add a little width to match mock */
+.complete-wrap .btn {
+  max-width: 514px;
+}
+
+/* Mobile tweaks for the complete screen */
+@media (max-width: 480px) {
+  .complete-wrap { min-height: 260px; padding: 16px 8px; }
+  .thanks-title { font-size: 20px; }
+  .thanks-sub { font-size: 13px; }
+}
+.form-tooltip {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 13px;
+  line-height: 1.4;
+  border: 1px solid #fecaca;
+  position: relative;
+}
+
+.form-tooltip::before {
+  content: " ";
+  position: absolute;
+  top: -6px;
+  left: 20px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent #fecaca transparent;
 }
