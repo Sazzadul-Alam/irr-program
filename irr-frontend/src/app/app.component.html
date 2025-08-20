@@ -1,4 +1,5 @@
 
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
 <div class="page" *ngIf="!showNextCard; else nextCard">
   <!-- Top breadcrumb -->
@@ -215,14 +216,14 @@
               <select class="input" name="paymentMethod" [(ngModel)]="paymentMethod">
                 <option *ngFor="let m of paymentMethods" [value]="m">{{ m }}</option>
               </select>
-              <ng-container *ngIf="paymentMethod === 'bKash'" class="pay-inline">
-                <strong class="merchant-no">{{ merchantNumber }}</strong>
-                <span class="muted">(Merchant No.)</span>
-              </ng-container>
-              <ng-container *ngIf="paymentMethod === 'Bank'">
-                <strong class="merchant-no">A/C: {{ bank.accountNo }}</strong>
-                <span class="muted">({{ bank.bankName }})</span>
-              </ng-container>
+<!--              <ng-container *ngIf="paymentMethod === 'bKash'" class="pay-inline">-->
+<!--                <strong class="merchant-no">{{ merchantNumber }}</strong>-->
+<!--                <span class="muted">(Merchant No.)</span>-->
+<!--              </ng-container>-->
+<!--              <ng-container *ngIf="paymentMethod === 'Bank'">-->
+<!--                <strong class="merchant-no">A/C: {{ bank.accountNo }}</strong>-->
+<!--                <span class="muted">({{ bank.bankName }})</span>-->
+<!--              </ng-container>-->
             </div>
           </label>
 
@@ -230,10 +231,10 @@
           <ng-container *ngIf="paymentMethod === 'bKash';">
             <div class="pay-instructions grid-span-2">
               <ol>
-                <li>Select <strong>Make Payment</strong> in bKash.</li>
-                <li>Provide DataSoft Merchant Wallet <strong>{{ merchantNo }}</strong>.</li>
-                <li>Pay the Program Expenditure.</li>
-                <li>Copy Transaction ID (Trx ID) and paste below.</li>
+                <li>Payment Instruction: Please make the program expenditure payment via bKash “Send Money”
+                  to the Datasoft wallet and provide the Trx ID below .
+                </li>
+                <li>bKash: 01708491569 </li>
               </ol>
             </div>
           </ng-container>
