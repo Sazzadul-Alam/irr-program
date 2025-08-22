@@ -1,0 +1,492 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<div class="page" *ngIf="!showNextCard; else nextCard">
+  <!-- Top breadcrumb -->
+  <div class="ml-5 mt-2">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <img src="/assets/image/irr_icon.png" alt="IRR Icon" style="width: 24px; height: 24px;" />
+      <span style="color: #3E3C91"><b>IRR Training Program Enrollment</b></span>
+    </div>
+  </div>
+  <hr>
+
+  <!-- Card -->
+  <div class="card" style="opacity: 0.855">
+    <!-- STEPPER -->
+    <div class="stepper-rail">
+      <ul class="steps">
+        <!-- STEP 1 -->
+        <li class="step"
+            [class.active]="step === 1"
+            [class.completed]="step > 1">
+          <div class="head">
+            <span class="dot">1</span>
+            <div class="track" aria-hidden="true">
+              <div class="fill"
+                   [style.width.%]="step === 1 ? progress : 100"></div>
+            </div>
+          </div>
+          <div class="caption">Information</div>
+        </li>
+
+        <!-- STEP 2 -->
+        <li class="step"
+            [class.active]="step === 2"
+            [class.completed]="step > 2">
+          <div class="head">
+            <span class="dot">2</span>
+            <div class="track" aria-hidden="true">
+              <div class="fill"
+                   [style.width.%]="step === 2 ? progress : (step > 2 ? 100 : 0)"></div>
+            </div>
+          </div>
+          <div class="caption">Payment</div>
+        </li>
+
+        <!-- STEP 3 -->
+        <li class="step" [class.active]="step === 3">
+          <div class="head">
+            <span class="dot">3</span>
+            <!-- no track after the last dot -->
+          </div>
+          <div class="caption">Complete</div>
+        </li>
+      </ul>
+    </div>
+    <!-- Form -->
+    <form class="form" novalidate>
+      <div class="grid">
+        <!-- Name -->
+        <label class="field">
+          <span class="label">Name*</span>
+          <input
+            class="input"
+            type="text"
+            [(ngModel)]="name"
+            name="fullName"
+          />
+        </label>
+
+        <!-- Contact Number -->
+        <label class="field">
+          <span class="label">Contact Number*</span>
+          <input
+            class="input"
+            type="tel"
+            name="contactNumber"
+            [(ngModel)]="contactNumber"
+            #contactCtrl="ngModel"
+            required
+            pattern="^[0-9]{11}$"
+            minlength="11"
+            maxlength="11"
+          />
+          <div class="error" *ngIf="contactCtrl.touched && contactCtrl.invalid">
+            <span *ngIf="contactCtrl.errors?.['required']">Contact number is required.</span>
+            <span *ngIf="contactCtrl.errors?.['pattern']">Please provide valid contact number.</span>
+          </div>
+        </label>
+
+        <!-- Email -->
+        <!-- Email -->
+        <label class="field">
+          <span class="label">Email Address*</span>
+          <input
+            class="input"
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+            #emailCtrl="ngModel"
+            required
+            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+            placeholder="abc@gmail.com"
+          />
+          <div class="error" *ngIf="emailCtrl.touched && emailCtrl.invalid">
+            <span *ngIf="emailCtrl.errors?.['required']">Email is required.</span>
+            <span *ngIf="emailCtrl.errors?.['pattern']">Please enter a valid email address.</span>
+          </div>
+        </label>
+
+
+
+        <!-- Training Mode -->
+        <label class="field">
+          <span class="label">Training Medium*</span>
+          <select
+            class="input"
+            name="trainingMode"
+            [(ngModel)]="trainingMode"
+            (change)="setTrainingMode(trainingMode)"
+          >
+            <option value="" disabled selected>Select</option>
+            <option *ngFor="let m of modes" [value]="m">{{ m }}</option>
+          </select>
+        </label>
+        <label class="field grid-span-2">
+          <span class="label">Program*</span>
+          <select class="input" name="program" [(ngModel)]="selectedProgram"
+                  (change)="setSelectedProgram(selectedProgram)">
+            <option value="" disabled selected>Select</option>
+            <option *ngFor="let program of programs" [value]="program.program_name">
+              {{ program.program_name }}
+            </option>
+          </select>
+        </label>
+	<label class="field" *ngIf="selectedProgram != ''" >
+	    <span class="label">Class Number : {{ noOfClass }}</span>
+	  </label>
+	  <label class="field" *ngIf="selectedProgram != ''">
+	    <span class="label">Class Hour : {{ classHour }}</span>
+	  </label>
+      </div>
+      <div *ngIf="formError as msg" class="form-tooltip" role="alert" aria-live="polite">
+        {{ msg }}
+      </div>
+
+      <button type="button" class="btn" (click)="validate()">Proceed for Payment →</button>
+    </form>
+  </div>
+  <footer>
+    <div class="footer-logo">
+    </div>
+  </footer>
+
+</div>
+
+
+<ng-template #nextCard>
+  <div class="page" *ngIf="!showLastCard; else lastCard">
+
+    <div class="ml-5 mt-2">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <img src="/assets/image/irr_icon.png" alt="IRR Icon" style="width: 24px; height: 24px;" />
+        <span style="color: #3E3C91"><b>IRR Training Program Enrollment</b></span>
+      </div>
+    </div>
+    <hr>
+
+    <!-- Card -->
+    <div class="card">
+      <div class="mb-2">
+        <button
+          type="button"
+          class="back-btn"
+          (click)="goBack()"
+          aria-label="Back to Information"
+        >
+          <span class="arrow">←</span>
+          Back
+        </button>
+      </div>
+      <div class="stepper-rail">
+        <ul class="steps">
+          <!-- STEP 1 -->
+          <li class="step"
+              [class.active]="step === 1"
+              [class.completed]="step > 1">
+            <div class="head">
+              <span class="dot">1</span>
+              <div class="track" aria-hidden="true">
+                <div class="fill"
+                     [style.width.%]="step === 1 ? progress : 100"></div>
+              </div>
+            </div>
+            <div class="caption">Information</div>
+          </li>
+
+          <li class="step"
+              [class.active]="step === 2"
+              [class.completed]="step > 2">
+            <div class="head">
+              <span class="dot">2</span>
+              <div class="track" aria-hidden="true">
+                <div class="fill"
+                     [style.width.%]="step === 2 ? progress : (step > 2 ? 100 : 0)"></div>
+              </div>
+            </div>
+            <div class="caption">Payment</div>
+          </li>
+
+          <!-- STEP 3 -->
+          <li class="step" [class.active]="step === 3">
+            <div class="head">
+              <span class="dot">3</span>
+              <!-- no track after the last dot -->
+            </div>
+            <div class="caption">Complete</div>
+          </li>
+        </ul>
+      </div>
+
+
+
+      <form class="form" #enrollForm="ngForm" novalidate>
+        <div class="grid">
+          <!-- Program Name (readonly) -->
+          <label class="field grid-span-2">
+            <span class="label">Program Name</span>
+            <input class="input" type="text"
+                   [value]="selectedProgram"
+                   readonly/>
+          </label>
+
+	<label class="field">
+	    <span class="label">Class Number: {{ noOfClass }}</span>
+	  </label>
+	  <label class="field">
+	    <span class="label">Class Hour : {{ classHour }}</span>
+	  </label>
+          <label class="field">
+            <span class="label">Program Expenditure</span>
+            <input class="input" type="text"
+                   [value]="selectedProgram?.price || programPrice"
+                   readonly/>
+          </label>
+          <label class="field">
+            <span class="label">Payment Mode*</span>
+            <div class="pay-inline">
+              <select class="input" name="paymentMethod" [(ngModel)]="paymentMethod">
+                <option *ngFor="let m of paymentMethods" [value]="m">{{ m }}</option>
+              </select>
+            </div>
+          </label>
+
+          <!-- Details + Instructions -->
+          <ng-container *ngIf="paymentMethod === 'bKash';">
+            <label class="field grid-span-2">
+            <span class="label">Payment Instruction</span>
+            <div class="pay-instructions grid-span-2">
+              <ol style="font-weight: 400!important;">
+                <li>Please make the program expenditure payment via bKash <strong>“Send Money”</strong> to the Datasoft wallet - <strong> 01723790075</strong>.</li>
+                <li>Include your <strong>Name</strong> as payment reference.</li>
+                <li>Provide the bKash number from which the payment is done,Trx ID and payment receipt below.</li>
+              </ol>
+            </div>
+            </label>
+          </ng-container>
+
+          <ng-container *ngIf="paymentMethod === 'Bank'">
+            <label class="field grid-span-2">
+              <span class="label">Bank Details</span>
+              <div class="pay-instructions grid-span-2">
+                <ul style="font-weight: 400!important;list-style-type: disc;">
+                  <li> Name of Account: DataSoft Systems Bangladesh Limited</li>
+                  <li> Account No: 		0121020003804</li>
+                  <li> Bank Name: 		One Bank Limited</li>
+                  <li> Branch Name:		Kawran Bazar Branch</li>
+<!--                  <li> Swift Code:		ONEBBDDH012</li>-->
+                  <li> Routing No:		165262538</li>
+<!--                  <li>Make a bank transfer/deposit to the account above.</li>-->
+<!--                  <li>Include your <strong>Name</strong> as payment reference.</li>-->
+<!--                  <li>Keep the deposit slip/transfer receipt.</li>-->
+<!--                  <li>Enter the <strong>Bank Reference / UTR</strong> number below.</li>-->
+                </ul>
+              </div>
+            </label>
+            <label class="field grid-span-2">
+              <span class="label">Payment Instruction</span>
+              <div class="pay-instructions grid-span-2">
+                <ol style="font-weight: 400!important;">
+                  <li>Make a bank transfer/deposit to the account above.</li>
+                  <li>Include your <strong>Name</strong> as payment reference.</li>
+                  <li>Provide the Trx ID, sender account and payment receipt below.</li>
+                </ol>
+              </div>
+            </label>
+
+          </ng-container>
+          <label class="field grid-span-2" *ngIf="paymentMethod === 'Bank'">
+            <span class="label">Sender Account No.*</span>
+            <input
+              class="input"
+              type="tel"
+              name="accNumber"
+              [(ngModel)]="accNumber"
+              required
+              #accCtrl="ngModel"
+              placeholder="Please provide sender Account Number"
+            />
+            <div class="error" *ngIf="accCtrl.touched && accCtrl.invalid">
+              <span *ngIf="accCtrl.errors?.['required']">Sender bank account number is required.</span>
+            </div>
+          </label>
+          <label class="field grid-span-2" *ngIf="paymentMethod === 'bKash'">
+            <span class="label">Sender bKash/Account No.*</span>
+            <input
+              class="input"
+              type="tel"
+              name="accNumber"
+              [(ngModel)]="accNumber"
+              required
+              maxlength="11"
+              pattern="^[0-9]{11}$"
+              #accCtrl24="ngModel"
+              placeholder="Please provide sender bKash Number"
+            />
+<!--            pattern="^[0-9]{11}$"-->
+<!--            #accCtrl="ngModel"-->
+            <div class="error" *ngIf="accCtrl24.touched && accCtrl24.invalid">
+              <span *ngIf="accCtrl24.errors?.['required']">Sender bKash number is required.</span>
+              <span *ngIf="accCtrl24.errors?.['pattern']">Please provide sender valid bKash number.</span>
+            </div>
+          </label>
+
+          <label class="field grid-span-2" *ngIf="paymentMethod === 'Bank'">
+            <span class="label">Transaction ID*</span>
+            <input
+              class="input"
+              type="text"
+              placeholder="Please provide Trx Id"
+              name="transactionId"
+              [(ngModel)]="transactionId"
+              required
+              #trx="ngModel"
+            />
+            <div class="error" *ngIf="trx.touched && trx.invalid">
+              <span *ngIf="trx.errors?.['required']">Transaction ID is required.</span>
+            </div>
+          </label>
+          <label class="field grid-span-2" *ngIf="paymentMethod === 'bKash'">
+            <span class="label">Transaction ID*</span>
+            <input
+              class="input"
+              type="text"
+              placeholder="Example: TrxID 6OE3U2GO12"
+              name="transactionId"
+              [(ngModel)]="transactionId"
+              #trx2="ngModel"
+              required
+              pattern="^TrxID [A-Z0-9]{10}$"
+            />
+            <div class="error" *ngIf="trx2.touched && trx2.invalid">
+              <span *ngIf="trx2.errors?.['required']">Transaction ID is required.</span>
+              <span *ngIf="trx2.errors?.['pattern']">
+      Invalid format. Example: <strong>TrxID 6OE32UGO12</strong>
+    </span>
+            </div>
+          </label>
+
+
+
+          <label class="field grid-span-2">
+            <span class="label">Upload Receipt/Image (PNG/JPG/PDF, max 5MB)*</span>
+
+            <input class="pt-2"
+              type="file"
+              accept=".png,.jpg,.jpeg,.pdf"
+              (change)="onFileSelected($event)"
+            />
+
+            <!-- Preview for image -->
+            <div *ngIf="previewUrl && isImage" style="margin-top:8px;">
+              <img [src]="previewUrl" alt="Preview" style="max-width:180px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.08)" />
+            </div>
+
+            <!-- Filename for PDF -->
+            <div *ngIf="selectedFile && !isImage" style="margin-top:8px;color:#6b7280;">
+              Selected: <strong>{{ selectedFile?.name }}</strong>
+            </div>
+
+            <!-- Error -->
+            <div class="error" *ngIf="fileError" style="margin-top:6px;">
+              {{ fileError }}
+            </div>
+          </label>
+        </div>
+
+        <button type="button"
+                class="btn"
+                [disabled]="enrollForm.invalid
+                   || !transactionId
+                   || paymentMethod==''
+                   || selectedFile==null || formValid() || isLoading"
+                (click)="finalize(); uploadSelectedFile()">
+          <ng-container *ngIf="!isLoading; else loadingTpl">
+            Submit For Enrollment
+          </ng-container>
+
+          <ng-template #loadingTpl>
+            <div class="spinner-border text-light spinner-border-sm" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            Processing...
+          </ng-template>
+
+        </button>
+
+      </form>
+
+
+    </div>
+    <footer>
+      <div class="footer-logo">
+      </div>
+    </footer>
+
+  </div>
+  <ng-template #lastCard>
+    <div class="page">
+
+      <div class="ml-5 mt-2">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <img src="/assets/image/irr_icon.png" alt="IRR Icon" style="width: 24px; height: 24px;" />
+          <span style="color: #3E3C91"><b>IRR Training Program Enrollment</b></span>
+        </div>
+      </div>
+      <hr>
+      <div class="card">
+        <div class="stepper-rail">
+          <ul class="steps">
+            <!-- STEP 1 -->
+            <li class="step"
+                [class.active]="step === 1"
+                [class.completed]="step > 1">
+              <div class="head">
+                <span class="dot">1</span>
+                <div class="track" aria-hidden="true">
+                  <div class="fill"
+                       [style.width.%]="step === 1 ? progress : 100"></div>
+                </div>
+              </div>
+              <div class="caption">Information</div>
+            </li>
+
+            <li class="step"
+                [class.active]="step === 2"
+                [class.completed]="step > 2">
+              <div class="head">
+                <span class="dot">2</span>
+                <div class="track" aria-hidden="true">
+                  <div class="fill"
+                       [style.width.%]="step === 2 ? progress : (step > 2 ? 100 : 0)"></div>
+                </div>
+              </div>
+              <div class="caption">Payment</div>
+            </li>
+
+            <!-- STEP 3 -->
+            <li class="step" [class.active]="step === 3">
+              <div class="head">
+                <span class="dot">3</span>
+                <!-- no track after the last dot -->
+              </div>
+              <div class="caption">Complete</div>
+            </li>
+          </ul>
+        </div>
+        <div class="complete-wrap" *ngIf="step === 3" aria-live="polite">
+          <h3 class="thanks-title">Thank You!</h3>
+          <p class="thanks-sub">
+            Your request is currently being processed.<br>
+            You will be notified once the verification is completed.
+          </p>
+          <button type="button" class="btn" (click)="done()">Done</button>
+        </div>
+      </div>
+      <footer>
+        <div class="footer-logo">
+        </div>
+      </footer>
+    </div>
+  </ng-template>
+</ng-template>

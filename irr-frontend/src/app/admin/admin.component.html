@@ -1,1 +1,58 @@
-<p>admin works!</p>
+<div class="container">
+  <div style="margin-bottom:12px;margin-top: 15px">
+    <input
+      type="text"
+      class="input"
+      placeholder="Search..."
+      [(ngModel)]="searchTerm"
+      (input)="applyFilter()"
+      (keydown.enter)="applyFilter()"
+      style="max-width:300px;"
+    />
+  </div>
+
+  <div #div id="dataTable">
+    <table class="box-padding full-width table-fixed table-shade"
+           style="border:1px solid black; border-collapse:collapse;">
+      <thead>
+      <tr class="tr-header">
+        <th style="border:1px solid black;">Name</th>
+        <th style="border:1px solid black;">Contact</th>
+        <th style="border:1px solid black;">Mode</th>
+        <th style="border:1px solid black;">Program name</th>
+        <th style="border:1px solid black;">Transaction ID.</th>
+        <th style="border:1px solid black;">Email</th>
+        <th style="border:1px solid black;">Method</th>
+        <th style="border:1px solid black;">Account No.</th>
+        <th style="border:1px solid black;">Registration Date</th>
+        <th style="border:1px solid black;">Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let lst of filteredList">
+        <td style="border:1px solid black;">{{ lst.name }}</td>
+        <td style="border:1px solid black;">{{ lst.contact }}</td>
+        <td style="border:1px solid black;">{{ lst.training_mode }}</td>
+        <td style="border:1px solid black;">{{ lst.program_name }}</td>
+        <td style="border:1px solid black;">{{ lst.trx_id }}</td>
+        <td style="border:1px solid black;">{{ lst.email }}</td>
+        <td style="border:1px solid black;">{{ lst.method }}</td>
+        <td style="border:1px solid black;">{{ lst.sender_account }}</td>
+        <td style="border:1px solid black;">{{ lst.registration_date }}</td>
+        <td style="border:1px solid black; text-align:center;">
+          <a class="btn btn-sm"
+             [href]="'/webservice/irrcont/file/' + lst.trx_id"
+             target="_blank"
+             download>
+            Download
+          </a>
+        </td>
+      </tr>
+      <tr *ngIf="filteredList.length === 0">
+        <td colspan="9" style="text-align:center;padding:12px;">No records found</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
